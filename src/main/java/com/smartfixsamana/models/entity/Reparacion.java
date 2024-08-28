@@ -1,52 +1,67 @@
 package com.smartfixsamana.models.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "reparaciones")
-public class Reparacion {
+public class Reparacion implements Serializable{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
 	private long id;
 
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name = "cliente_id")
-	private Cliente cliente;
+	private Cliente clienteId;
 
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name = "celular_id")
-	private Celular celular;
+	private Celular celularId;
+
+	private String problema;
 
 	private String estado;
-	private LocalDate fechaEntrega;
+
+	@Column(name = "fecha_ingreso")
+	private LocalDate fechaIngreso;
+
+	@Column(name = "fecha_estimada_entrega")
 	private LocalDate fechaEstimadaEntrega;
 
 	public long getId() {
 		return id;
 	}
 
-	public void setId(long idReparacion) {
-		this.id = idReparacion;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public Cliente getClienteId() {
+		return clienteId;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setClienteId(Cliente cliente) {
+		this.clienteId = cliente;
 	}
 
-	public Celular getCelular() {
-		return celular;
+	public Celular getCelularId() {
+		return celularId;
 	}
 
-	public void setCelular(Celular celular) {
-		this.celular = celular;
+	public void setCelularId(Celular celular) {
+		this.celularId = celular;
+	}
+
+	public String getProblema() {
+		return problema;
+	}
+
+	public void setProblema(String problema) {
+		this.problema = problema;
 	}
 
 	public String getEstado() {
@@ -57,12 +72,12 @@ public class Reparacion {
 		this.estado = estado;
 	}
 
-	public LocalDate getFechaEntrega() {
-		return fechaEntrega;
+	public LocalDate getFechaIngreso() {
+		return fechaIngreso;
 	}
 
-	public void setFechaEntrega(LocalDate fechaEntrega) {
-		this.fechaEntrega = fechaEntrega;
+	public void setFechaIngreso(LocalDate fechaEntrega) {
+		this.fechaIngreso = fechaEntrega;
 	}
 
 	public LocalDate getFechaEstimadaEntrega() {
@@ -72,5 +87,6 @@ public class Reparacion {
 	public void setFechaEstimadaEntrega(LocalDate fechaEstimadaEntrega) {
 		this.fechaEstimadaEntrega = fechaEstimadaEntrega;
 	}
+	private static final long serialVersionUID = 1L;
 
 }

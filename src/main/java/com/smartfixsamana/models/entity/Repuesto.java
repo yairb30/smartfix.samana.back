@@ -1,45 +1,50 @@
 package com.smartfixsamana.models.entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.*;
 
 @Entity
-public class Repuesto {
+@Table(name = "repuestos")
+public class Repuesto implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
-	private long idRepusto;
+	private long id;
+
+	@ManyToOne()
+	@JoinColumn(name = "lista_repuesto_id")
+	private ListaRepuesto elegirRepuesto;
 
 	@ManyToOne
-	@JoinColumn(name = "idListaRepuesto")
-	private ListaRepuesto listaRepuesto;
+	@JoinColumn(name = "celular_id")
+	private Celular elegirCelular;
 
-	@ManyToOne
-	@JoinColumn(name = "idCelular")
-	private Celular celular;
-
-	public long getIdRepusto() {
-		return idRepusto;
+	public long getId() {
+		return id;
 	}
 
-	public void setIdRepusto(long idRepusto) {
-		this.idRepusto = idRepusto;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public Celular getCelular() {
-		return celular;
+	public Celular getElegirCelular() {
+		return elegirCelular;
 	}
 
-	public void setCelular(Celular celular) {
-		this.celular = celular;
+	public void setElegirCelular(Celular elegirCelular) {
+		this.elegirCelular = elegirCelular;
 	}
 
-	public ListaRepuesto getListaRepuesto() {
-		return listaRepuesto;
+	public ListaRepuesto getElegirRepuesto() {
+		return elegirRepuesto;
 	}
 
-	public void setListaRepuesto(ListaRepuesto listaRepuesto) {
-		this.listaRepuesto = listaRepuesto;
+	public void setElegirRepuesto(ListaRepuesto listaRepuesto) {
+		this.elegirRepuesto = listaRepuesto;
 	}
+
+	private static final long serialVersionUID = 1L;
 
 }

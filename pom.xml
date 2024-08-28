@@ -8,11 +8,11 @@
 		<version>3.3.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>com.smartfixsamana</groupId>
 	<artifactId>smartfixsamana_back</artifactId>
 	<version>0.0.1</version>
 	<name>smartfixsamana_back</name>
-	<description>Proyecto gestios de reparaciones para celulares</description>
+	<description>Proyecto gestión de reparaciones para celulares</description>
 	<url/>
 	<licenses>
 		<license/>

@@ -1,13 +1,15 @@
 package com.smartfixsamana.models.entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "celulares")
-public class Celular {
+public class Celular implements Serializable{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String marca;
 	private String modelo;
@@ -35,5 +37,6 @@ public class Celular {
 	public void setModelo(String modelo) {
 		this.modelo = modelo;
 	}
+	private static final long serialVersionUID = 1L;
 
 }
