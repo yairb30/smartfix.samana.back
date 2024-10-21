@@ -3,6 +3,7 @@ package com.smartfixsamana.models.entity;
 import java.io.Serializable;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "lista_repuestos")
@@ -12,7 +13,11 @@ public class ListaRepuesto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
 	private Long id;
+
+	@NotBlank
 	private String nombre;
+
+	@NotBlank
 	private String detalles;
 
 	public Long getId() {
