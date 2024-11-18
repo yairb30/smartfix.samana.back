@@ -68,6 +68,7 @@ public class ListaRepuestoController {
         listaRepuestoService.delete(id);
         return ResponseEntity.ok().body("Eliminado con exito");
     }
+    
     private ResponseEntity<?> validation(BindingResult bindingResult){
         Map<String, String> errors = new HashMap<>();
         bindingResult.getFieldErrors().forEach(error ->{

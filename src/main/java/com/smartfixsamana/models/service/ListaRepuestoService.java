@@ -10,7 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.smartfixsamana.models.dao.IListaRepuestoDao;
 import com.smartfixsamana.models.entity.ListaRepuesto;
-import com.smartfixsamana.models.entity.Repuesto;
 
 @Service
 public class ListaRepuestoService {

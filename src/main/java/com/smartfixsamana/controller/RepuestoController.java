@@ -1,6 +1,8 @@
 package com.smartfixsamana.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.smartfixsamana.models.dto.RepuestoDTO;
 import com.smartfixsamana.models.entity.Repuesto;
 import com.smartfixsamana.models.service.RepuestoService;
+
+import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -51,7 +56,10 @@ public class RepuestoController {
     }
 
     @PostMapping
-    public ResponseEntity<Repuesto> createRepuesto(@RequestBody RepuestoDTO repuestoDTO) {
+    public ResponseEntity<?> createRepuesto(@Valid @RequestBody RepuestoDTO repuestoDTO, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return validation(bindingResult);
+        }
         Repuesto neewRepuesto = repuestoService.saveRepuesto(repuestoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(neewRepuesto);
     }
@@ -67,19 +75,26 @@ public class RepuestoController {
         repuestoService.deleteRepuesto(id);
         return ResponseEntity.ok().body("Eliminado con exito");
     }
-
+    
     // Endpoint para buscar por nombre o detalles del repuesto
     @GetMapping("/search/repuesto")
-    public ResponseEntity<List<Repuesto>> searchByNombreRepuesto(@RequestParam("keyword") String keyword) {
-        List<Repuesto> repuestos = repuestoService.searchByNombreRepuesto(keyword);
+    public ResponseEntity<List<Repuesto>> searchByNombreRepuesto(@RequestParam String repuesto) {
+        List<Repuesto> repuestos = repuestoService.searchByNombreRepuesto(repuesto);
         return ResponseEntity.ok(repuestos);
     }
 
     // Endpoint para buscar por marca o modelo del celular
     @GetMapping("/search/celular")
-    public ResponseEntity<List<Repuesto>> searchByCelularMarcaModelo(@RequestParam("keyword") String keyword) {
-        List<Repuesto> repuestos = repuestoService.searchByCelularMarcaModelo(keyword);
+    public ResponseEntity<List<Repuesto>> searchByCelularMarcaModelo(@RequestParam String celular) {
+        List<Repuesto> repuestos = repuestoService.searchByCelularMarcaModelo(celular);
         return ResponseEntity.ok(repuestos);
+    }
+     private ResponseEntity<?> validation(BindingResult bindingResult){
+        Map<String, String> errors = new HashMap<>();
+        bindingResult.getFieldErrors().forEach(error ->{
+            errors.put(error.getField(), "El campo "+ error.getField() + error.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errors);
     }
 
 }
