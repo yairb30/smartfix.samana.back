@@ -45,49 +45,47 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(
                                         //Clientes
-                    athz -> athz.requestMatchers(HttpMethod.GET, "/clientes", "/clientes/page/{page}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/clientes/{id}").hasAnyRole("CLIENTE", "ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/clientes/nombre").hasAnyRole("CLIENTE", "ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/clientes").hasAnyRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/clientes/{id}").hasAnyRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/clientes/{id}").hasAnyRole("ADMIN")
+                    athz -> athz.requestMatchers("/**").permitAll()  // Permitir todos los recursos estáticos
+                                .requestMatchers(HttpMethod.GET, "/customers", "/customers/page/{page}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/customers/{id}").hasAnyRole("CLIENTE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/customers/name").hasAnyRole("CLIENTE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/customers").hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/customers/{id}").hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/customers/{id}").hasAnyRole("ADMIN")
 
                                         //Celulares
-                                .requestMatchers(HttpMethod.GET, "/celulares", "/celulares/page/{page}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/celulares/{id}").hasAnyRole("CLIENTE", "ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/celulares/marca").hasAnyRole("CLIENTE", "ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/celulares/modelo").hasAnyRole("CLIENTE", "ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/celulares").hasAnyRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/celulares/{id}").hasAnyRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/celulares/{id}").hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/phones", "/phones/page/{page}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/phones/{id}").hasAnyRole("CLIENTE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/phones/brand").hasAnyRole("CLIENTE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/phones/model").hasAnyRole("CLIENTE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/phones").hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/phones/{id}").hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/phones/{id}").hasAnyRole("ADMIN")
 
                                         //Reparaciones
-                                .requestMatchers(HttpMethod.GET, "/reparaciones", "reparaciones/page/{page}").permitAll()  
-                                .requestMatchers(HttpMethod.GET, "/reparaciones/{id}").hasAnyRole("CLIENTE", "ADMIN")     
-                                .requestMatchers(HttpMethod.GET, "/reparaciones/search/cliente").hasAnyRole("CLIENTE", "ADMIN")   
-                                .requestMatchers(HttpMethod.GET, "/reparaciones/search/celular").hasAnyRole("CLIENTE", "ADMIN") 
-                                .requestMatchers(HttpMethod.POST, "/reparaciones").hasAnyRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/reparaciones/{id}").hasAnyRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/reparaciones/{id}").hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/repairs", "repairs/page/{page}").permitAll()  
+                                .requestMatchers(HttpMethod.GET, "/repairs/{id}").hasAnyRole("CLIENTE", "ADMIN")     
+                                .requestMatchers(HttpMethod.GET, "/repairs/customer").hasAnyRole("CLIENTE", "ADMIN")   
+                                .requestMatchers(HttpMethod.GET, "/repairs/phone").hasAnyRole("CLIENTE", "ADMIN") 
+                                .requestMatchers(HttpMethod.POST, "/repairs").hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/repairs/{id}").hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/repairs/{id}").hasAnyRole("ADMIN")
 
-                                        //ListaRepuestos
-                                .requestMatchers(HttpMethod.GET, "/lis_repuestos").permitAll()      
-                                .requestMatchers(HttpMethod.GET, "/lis_repuestos/{id}").hasAnyRole("CLIENTE", "ADMIN")     
-                                .requestMatchers(HttpMethod.POST, "/lis_repuestos").hasAnyRole("ADMIN")     
-                                .requestMatchers(HttpMethod.PUT, "/lis_repuestos/{id}").hasAnyRole("ADMIN")     
-                                .requestMatchers(HttpMethod.DELETE, "/lis_repuestos/{id}").hasAnyRole("ADMIN")
+                                        //Catalogo de Repuestos
+                                .requestMatchers(HttpMethod.GET, "/part_catalog").permitAll()      
+                                .requestMatchers(HttpMethod.GET, "/part_catalog/{id}").hasAnyRole("CLIENTE", "ADMIN")
                                 
                                         //Repuestos
-                                .requestMatchers(HttpMethod.GET, "/repuestos", "/repuestos/page/{page}").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/repuestos/{id}").hasAnyRole("CLIENTE", "ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/repuestos/search/repuesto").hasAnyRole("CLIENTE", "ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/repuestos/search/celular").hasAnyRole("CLIENTE", "ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/repuestos").hasAnyRole("ADMIN")     
-                                .requestMatchers(HttpMethod.PUT, "/repuesto/{id}").hasAnyRole("ADMIN")     
-                                .requestMatchers(HttpMethod.DELETE, "/repuesto/{id}").hasAnyRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/parts", "/parts/page/{page}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/parts/{id}").hasAnyRole("CLIENTE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/parts/part").hasAnyRole("CLIENTE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/parts/phone").hasAnyRole("CLIENTE", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/parts").hasAnyRole("ADMIN")     
+                                .requestMatchers(HttpMethod.PUT, "/parts/{id}").hasAnyRole("ADMIN")     
+                                .requestMatchers(HttpMethod.DELETE, "/parts/{id}").hasAnyRole("ADMIN")
 
                                     //Usuarios
-                                .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
                                         
                                 .anyRequest().authenticated())
                 .cors(cors -> cors.configurationSource(configurationSource()))

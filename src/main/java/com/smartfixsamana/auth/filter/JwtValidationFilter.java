@@ -38,7 +38,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-                if (request.getRequestURI().equals("/usuarios") && request.getMethod().equalsIgnoreCase("POST")) {
+                if (request.getRequestURI().equals("/users_login") && request.getMethod().equalsIgnoreCase("POST")) {
                     chain.doFilter(request, response);
                     return;
                 }

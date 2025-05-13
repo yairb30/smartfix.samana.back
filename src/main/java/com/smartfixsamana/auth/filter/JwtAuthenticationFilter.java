@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smartfixsamana.models.entity.Usuario;
+import com.smartfixsamana.models.entity.UserLogin;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -44,9 +44,9 @@ public Authentication attemptAuthentication(HttpServletRequest request, HttpServ
                 String password = null;
         
                 try {
-                    Usuario usuario = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
-                    username = usuario.getUsername();
-                    password = usuario.getPassword();
+                    UserLogin userLogin = new ObjectMapper().readValue(request.getInputStream(), UserLogin.class);
+                    username = userLogin.getUsername();
+                    password = userLogin.getPassword();
                 } catch (StreamReadException e) {
                     e.printStackTrace();
                 } catch (DatabindException e) {
