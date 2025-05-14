@@ -33,10 +33,6 @@ public class PartService {
         return (List<Part>) iPartRepository.findAll();
     }
 
-    public Page<Part> findAllPageable(Pageable pageable){
-        return this.iPartRepository.findAll(pageable);
-    }
-
     public Optional<Part> findById(@PathVariable Long id) {
 
         return iPartRepository.findById(id);
@@ -85,14 +81,7 @@ public class PartService {
         iPartRepository.delete(part);
     }
 
-    // Método para buscar por nombre de repuesto
-    public List<Part> searchByNamePart(String part) {
-        return iPartRepository.findByNameContaining(part);
-    }
-
-    // Método para buscar por marca o modelo del celular
-    public List<Part> searchByBrandModel(String keyword) {
-        return iPartRepository.findByBrandModelContaining(keyword);
-
+    public Page<Part> findByKeyword(String keyword, Pageable pageable) {
+        return iPartRepository.findPartsByKeyword(keyword, pageable);
     }
 }

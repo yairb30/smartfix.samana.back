@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smartfixsamana.models.dto.PartDTO;
 import com.smartfixsamana.models.entity.Part;
+import com.smartfixsamana.models.entity.Repair;
 import com.smartfixsamana.models.service.PartService;
 
 import jakarta.validation.Valid;
@@ -42,12 +43,7 @@ public class PartController {
     public List<Part> findAll() {
         return partService.findAll();
     }
-    @GetMapping("/page/{page}")
-    public Page<Part> findAllPageable(@PathVariable Integer page){
-        Pageable pageable = PageRequest.of(page, 4);
-        return this.partService.findAllPageable(pageable);
-    }
-
+  
     @GetMapping("/{id}")
     public Optional<Part> findById(@PathVariable Long id) {
 
@@ -76,19 +72,15 @@ public class PartController {
         return ResponseEntity.ok().body("Eliminado con exito");
     }
     
-    // Endpoint para buscar por nombre o detalles del repuesto
-    @GetMapping("/part")
-    public ResponseEntity<List<Part>> searchByNamePart(@RequestParam String part) {
-        List<Part> parts = partService.searchByNamePart(part);
-        return ResponseEntity.ok(parts);
-    }
+     @GetMapping("/search")
+    public ResponseEntity<Page<Part>> findByKeyword(@RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size) {
 
-    // Endpoint para buscar por marca o modelo del celular
-    @GetMapping("/phone")
-    public ResponseEntity<List<Part>> searchByCelularMarcaModelo(@RequestParam String phone) {
-        List<Part> parts = partService.searchByBrandModel(phone);
-        return ResponseEntity.ok(parts);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Part> results = partService.findByKeyword(keyword, pageable);
+        return ResponseEntity.ok(results);
     }
+   
      private ResponseEntity<?> validation(BindingResult bindingResult){
         Map<String, String> errors = new HashMap<>();
         bindingResult.getFieldErrors().forEach(error ->{

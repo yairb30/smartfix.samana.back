@@ -32,10 +32,6 @@ public class RepairService {
         return (List<Repair>) iRepairRepository.findAll();
     }
 
-    public Page<Repair> getAllPageable(Pageable pageable) {
-        return this.iRepairRepository.findAll(pageable);
-    }
-
     public Optional<Repair> getById(Long id) {
         return iRepairRepository.findById(id);
     }
@@ -47,7 +43,6 @@ public class RepairService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Celular no encontrado"));
 
         Repair repair = new Repair();
-
         repair.setCustomer(customer);
         repair.setPhone(phone);
         repair.setFault(repairDTO.getFault());
@@ -59,7 +54,7 @@ public class RepairService {
 
     public Repair update(Long id, RepairDTO repairDTO) {
         Repair repair = iRepairRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Reparación no encontrada"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reparación no encontrada"));
 
         Customer customer = customerService.findById(repairDTO.getCustomerId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
@@ -78,20 +73,12 @@ public class RepairService {
     public void delete(Long id) {
         Repair repair = iRepairRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Reparacion no encontrado con el ID: " + id));
-
+                        "Reparación no encontrada con el ID: " + id));
         iRepairRepository.delete(repair);
     }
 
-    // Método para buscar por nombre o apellido del cliente
-    public List<Repair> searchByNameLastname(String keyword) {
-        return iRepairRepository.findByNameLastnameContaining(keyword);
+    // Búsqueda paginada por palabra clave
+    public Page<Repair> findByKeyword(String keyword, Pageable pageable) {
+        return iRepairRepository.findRepairsByKeyword(keyword, pageable);
     }
-
-    // Método para buscar por marca o modelo del celular
-    public List<Repair> searchByBrandModel(String keyword) {
-        return iRepairRepository.findByBrandModelContaining(keyword);
-
-    }
-
 }

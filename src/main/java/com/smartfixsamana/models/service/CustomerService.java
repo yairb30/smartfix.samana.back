@@ -25,10 +25,6 @@ public class CustomerService {
     }
     
 
-    public Page<Customer> findAll(Pageable pageable){
-        return iCustomerRepository.findAll(pageable);
-    }
-
     public Optional<Customer> findById(@PathVariable Long id) {
 
         return iCustomerRepository.findById(id);
@@ -41,17 +37,17 @@ public class CustomerService {
 
     }
 
-    public Customer update(Long phoneId, Customer customerDetails) {
+    public Customer update(Long customerId, Customer customerDetails) {
 
-        Customer cliente = iCustomerRepository.findById(phoneId)
+        Customer customer = iCustomerRepository.findById(customerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Cliente no encontrado con el ID: " + phoneId));
-        cliente.setName(customerDetails.getName());
-        cliente.setLastname(customerDetails.getLastname());
-        cliente.setPhone(customerDetails.getPhone());
-        cliente.setEmail(customerDetails.getEmail());
+                        "Cliente no encontrado con el ID: " + customerId));
+        customer.setName(customerDetails.getName());
+        customer.setLastname(customerDetails.getLastname());
+        customer.setPhone(customerDetails.getPhone());
+        customer.setEmail(customerDetails.getEmail());
 
-        return iCustomerRepository.save(cliente);
+        return iCustomerRepository.save(customer);
     }
 
     public void delete(Long customerId) {
@@ -62,8 +58,8 @@ public class CustomerService {
         iCustomerRepository.delete(customer);
     }
 
-    public List<Customer> findByName(String name) {
-       return iCustomerRepository.findByName(name);
+    public Page<Customer> findByKeyword(String keyword, Pageable pageable) {
+        return iCustomerRepository.findCustomersByKeyword(keyword, pageable);
     }
 
 }

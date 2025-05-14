@@ -24,10 +24,6 @@ public class PhoneService {
         return (List<Phone>) iPhoneRepository.findAll();
     }
 
-    public Page<Phone> findAll(Pageable pageable) {
-        return iPhoneRepository.findAll(pageable);
-    }
-
     public Optional<Phone> findById(@PathVariable Long id) {
 
         return iPhoneRepository.findById(id);
@@ -59,12 +55,8 @@ public class PhoneService {
         iPhoneRepository.delete(phone);
     }
 
-    public List<Phone> findByBrand(String brand) {
-        return iPhoneRepository.findByBrand(brand);
-    }
-
-    public List<Phone> findByModel(String model) {
-        return iPhoneRepository.findByModel(model);
+    public Page<Phone> findByKeyword(String keyword, Pageable pageable) {
+        return iPhoneRepository.findPhonesByKeyword(keyword, pageable);
     }
 
 }

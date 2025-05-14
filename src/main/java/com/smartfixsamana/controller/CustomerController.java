@@ -44,12 +44,6 @@ public class CustomerController {
         return customerService.findAll();
     }
 
-    @GetMapping("/page/{page}")
-    public Page<Customer> listPageable(@PathVariable Integer page) {
-        Pageable pageable = PageRequest.of(page, 4);
-        return customerService.findAll(pageable);
-    }
-
     @GetMapping("/{id}")
     public Optional<Customer> findById(@PathVariable Long id) {
 
@@ -85,9 +79,13 @@ public class CustomerController {
 
     }
 
-    @GetMapping("/searchByName")
-    public List<Customer> findByName(@RequestParam String name) {
-        return customerService.findByName(name);
+    @GetMapping("/search")
+    public ResponseEntity<Page<Customer>> findByKeyword(@RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Customer> results = customerService.findByKeyword(keyword, pageable);
+        return ResponseEntity.ok(results);
     }
 
     private ResponseEntity<?> validation(BindingResult bindingResult) {

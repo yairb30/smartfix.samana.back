@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.smartfixsamana.models.entity.Part;
 import com.smartfixsamana.models.entity.Phone;
 import com.smartfixsamana.models.service.PhoneService;
 
@@ -40,12 +41,6 @@ public class PhoneController {
     public List<Phone> getPhones() {
 
         return phoneService.findAll();
-    }
-
-    @GetMapping("/page/{page}")
-    public Page<Phone> listPageable(@PathVariable Integer page) {
-        Pageable pageable = PageRequest.of(page, 4);
-        return phoneService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
@@ -80,15 +75,13 @@ public class PhoneController {
         return ResponseEntity.ok().body("Celular eliminado con exito");
     }
 
-    @GetMapping("/brand")
-    public List<Phone> findByMarca(@RequestParam String brand) {
-        return phoneService.findByBrand(brand);
-    }
+     @GetMapping("/search")
+    public ResponseEntity<Page<Phone>> findByKeyword(@RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size) {
 
-    @GetMapping("/model")
-    public List<Phone> findByModelo(@RequestParam String model) {
-        return phoneService.findByModel(model);
-
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Phone> results = phoneService.findByKeyword(keyword, pageable);
+        return ResponseEntity.ok(results);
     }
 
     private ResponseEntity<?> validation(BindingResult bindingResult) {
