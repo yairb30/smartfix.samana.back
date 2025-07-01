@@ -1,4 +1,4 @@
-package com.smartfixsamana.models.service;
+package com.smartfixsamana.models.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,11 +12,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.smartfixsamana.models.entity.UserLogin;
-import com.smartfixsamana.models.repository.IUserLoginRepository;
+import com.smartfixsamana.models.entities.UserLogin;
+import com.smartfixsamana.models.repositories.IUserLoginRepository;
 
 @Service
-public class UserJpaDetailsService implements UserDetailsService {
+public class JpaUserDetailsService implements UserDetailsService {
 
     @Autowired
     private IUserLoginRepository iUserRepository;

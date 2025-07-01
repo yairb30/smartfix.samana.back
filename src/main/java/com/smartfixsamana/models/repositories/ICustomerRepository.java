@@ -1,4 +1,4 @@
-package com.smartfixsamana.models.repository;
+package com.smartfixsamana.models.repositories;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.smartfixsamana.models.entity.Customer;
+import com.smartfixsamana.models.entities.Customer;
 
 public interface ICustomerRepository extends CrudRepository<Customer, Long> {
 

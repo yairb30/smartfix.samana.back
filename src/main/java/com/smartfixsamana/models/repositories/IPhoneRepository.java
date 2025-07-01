@@ -1,4 +1,4 @@
-package com.smartfixsamana.models.repository;
+package com.smartfixsamana.models.repositories;
 
 
 import org.springframework.data.domain.Page;
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.smartfixsamana.models.entity.Phone;
+import com.smartfixsamana.models.entities.Phone;
 
 public interface IPhoneRepository extends CrudRepository<Phone, Long> {
 

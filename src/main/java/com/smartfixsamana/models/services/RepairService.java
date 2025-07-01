@@ -1,4 +1,4 @@
-package com.smartfixsamana.models.service;
+package com.smartfixsamana.models.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.smartfixsamana.models.dto.RepairDTO;
-import com.smartfixsamana.models.entity.Phone;
-import com.smartfixsamana.models.entity.Customer;
-import com.smartfixsamana.models.entity.Repair;
-import com.smartfixsamana.models.repository.IRepairRepository;
+import com.smartfixsamana.models.entities.Phone;
+import com.smartfixsamana.models.entities.Customer;
+import com.smartfixsamana.models.entities.Repair;
+import com.smartfixsamana.models.repositories.IRepairRepository;
 
 @Service
 public class RepairService {

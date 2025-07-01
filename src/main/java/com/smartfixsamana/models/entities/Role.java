@@ -1,4 +1,4 @@
-package com.smartfixsamana.models.entity;
+package com.smartfixsamana.models.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

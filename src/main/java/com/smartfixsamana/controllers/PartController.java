@@ -1,8 +1,8 @@
-package com.smartfixsamana.controller;
+package com.smartfixsamana.controllers;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,72 +23,67 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smartfixsamana.models.entity.Part;
-import com.smartfixsamana.models.entity.Phone;
-import com.smartfixsamana.models.service.PhoneService;
+import com.smartfixsamana.models.dto.PartDTO;
+import com.smartfixsamana.models.entities.Part;
+import com.smartfixsamana.models.services.PartService;
 
 import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/phones")
-public class PhoneController {
+@RequestMapping("/parts")
+public class PartController {
 
     @Autowired
-    private PhoneService phoneService;
+    private PartService partService;
+
 
     @GetMapping
-    public List<Phone> getPhones() {
-
-        return phoneService.findAll();
+    public List<Part> findAll() {
+        return partService.findAll();
     }
-
+  
     @GetMapping("/{id}")
-    public Optional<Phone> findPhoneById(@PathVariable Long id) {
+    public Optional<Part> findById(@PathVariable Long id) {
 
-        return phoneService.findById(id);
+        return partService.findById(id);
 
     }
 
-    @PostMapping()
-    public ResponseEntity<?> create(@Valid @RequestBody Phone phone, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+    @PostMapping
+    public ResponseEntity<?> create(@Valid @RequestBody PartDTO partDTO, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
             return validation(bindingResult);
         }
-        Phone newPhone = phoneService.create(phone);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newPhone);
+        Part neewPart = partService.save(partDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(neewPart);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @PathVariable Long id, @RequestBody Phone updatePhone,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return validation(bindingResult);
-        }
-        Phone newPhoneUpdate = phoneService.update(id, updatePhone);
-        return ResponseEntity.ok(newPhoneUpdate);
+    public ResponseEntity<Part> update(@PathVariable Long id, @RequestBody PartDTO partDTO) {
+        Part updaPart = partService.update(id, partDTO);
+        return ResponseEntity.ok().body(updaPart);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        phoneService.delete(id);
-        return ResponseEntity.ok().body("Celular eliminado con exito");
+        partService.delete(id);
+        return ResponseEntity.ok().body("Eliminado con exito");
     }
-
+    
      @GetMapping("/search")
-    public ResponseEntity<Page<Phone>> findByKeyword(@RequestParam String keyword,
+    public ResponseEntity<Page<Part>> findByKeyword(@RequestParam String keyword,
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Phone> results = phoneService.findByKeyword(keyword, pageable);
+        Page<Part> results = partService.findByKeyword(keyword, pageable);
         return ResponseEntity.ok(results);
     }
-
-    private ResponseEntity<?> validation(BindingResult bindingResult) {
+   
+     private ResponseEntity<?> validation(BindingResult bindingResult){
         Map<String, String> errors = new HashMap<>();
-
-        bindingResult.getFieldErrors().forEach(error -> {
-            errors.put(error.getField(), "El campo " + error.getField() + " " + error.getDefaultMessage());
+        bindingResult.getFieldErrors().forEach(error ->{
+            errors.put(error.getField(), "El campo "+ error.getField() + error.getDefaultMessage());
         });
         return ResponseEntity.badRequest().body(errors);
     }

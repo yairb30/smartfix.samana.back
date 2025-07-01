@@ -1,4 +1,4 @@
-package com.smartfixsamana.controller;
+package com.smartfixsamana.controllers;
 
 import java.util.List;
 import java.util.Map;
@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smartfixsamana.models.entity.Customer;
-import com.smartfixsamana.models.service.CustomerService;
+import com.smartfixsamana.models.entities.Customer;
+import com.smartfixsamana.models.services.CustomerService;
 
 import jakarta.validation.Valid;
 

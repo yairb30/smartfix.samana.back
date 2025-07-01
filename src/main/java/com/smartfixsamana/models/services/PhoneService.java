@@ -1,4 +1,4 @@
-package com.smartfixsamana.models.service;
+package com.smartfixsamana.models.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.smartfixsamana.models.entity.Phone;
-import com.smartfixsamana.models.repository.IPhoneRepository;
+import com.smartfixsamana.models.entities.Phone;
+import com.smartfixsamana.models.repositories.IPhoneRepository;
 
 @Service
 public class PhoneService {
@@ -41,8 +41,8 @@ public class PhoneService {
         Phone phone = iPhoneRepository.findById(phoneId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Celular no encontrado con el ID: " + phoneId));
-        phone.setBrand(phone.getBrand());
-        phone.setModel(phone.getModel());
+        phone.setBrand(phoneDetails.getBrand());
+        phone.setModel(phoneDetails.getModel());
 
         return iPhoneRepository.save(phone);
     }

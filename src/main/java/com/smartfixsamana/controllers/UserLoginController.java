@@ -1,30 +1,33 @@
-package com.smartfixsamana.controller;
+package com.smartfixsamana.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.smartfixsamana.models.entity.UserLogin;
-import com.smartfixsamana.models.service.UserLoginService;
+import com.smartfixsamana.models.entities.UserLogin;
+import com.smartfixsamana.models.services.UserLoginService;
 
 import jakarta.validation.Valid;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/users_login")
+@RequestMapping("/userslogin")
 public class UserLoginController {
 
     @Autowired
     private UserLoginService userLoginService;
+
+    @GetMapping
+    public List<UserLogin> findAll() {
+        return userLoginService.findAll();
+    }
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody UserLogin user, BindingResult result) {
@@ -33,6 +36,27 @@ public class UserLoginController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(userLoginService.save(user));
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@Valid @RequestBody UserLogin user, BindingResult result, @PathVariable Long id) {
+
+        if (result.hasErrors()) {
+            return validation(result);
+        }
+
+        Optional<UserLogin> userOptional = userLoginService.update(user, id);
+
+        if (userOptional.isPresent()) {
+            return ResponseEntity.ok(userOptional.orElseThrow());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        userLoginService.delete(id);
+        return ResponseEntity.ok().body("Eliminado con exito");
+    }
+
 
     private ResponseEntity<?> validation(BindingResult bindingResult) {
         Map<String, String> errors = new HashMap<>();

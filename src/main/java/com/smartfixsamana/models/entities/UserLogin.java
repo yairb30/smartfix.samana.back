@@ -1,4 +1,4 @@
-package com.smartfixsamana.models.entity;
+package com.smartfixsamana.models.entities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,19 +34,19 @@ public class UserLogin {
     @NotBlank
     @Size(min = 4, max = 12)
     private String username;
-    
+
     @NotBlank
     private String password;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean admin;
 
 
-    @JsonIgnoreProperties({ "handler", "hibernateLazyInitializer" })
+    @JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
-    @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
+            @UniqueConstraint(columnNames = {"user_id", "role_id"})})
 
     private List<Role> roles;
 

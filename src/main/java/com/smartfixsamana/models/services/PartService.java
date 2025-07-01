@@ -1,4 +1,4 @@
-package com.smartfixsamana.models.service;
+package com.smartfixsamana.models.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.smartfixsamana.models.dto.PartDTO;
-import com.smartfixsamana.models.entity.Phone;
-import com.smartfixsamana.models.entity.PartCatalog;
-import com.smartfixsamana.models.entity.Part;
-import com.smartfixsamana.models.repository.IPartRepository;
+import com.smartfixsamana.models.entities.Phone;
+import com.smartfixsamana.models.entities.PartCatalog;
+import com.smartfixsamana.models.entities.Part;
+import com.smartfixsamana.models.repositories.IPartRepository;
 
 @Service
 public class PartService {

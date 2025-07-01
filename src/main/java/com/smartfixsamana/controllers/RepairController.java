@@ -1,4 +1,4 @@
-package com.smartfixsamana.controller;
+package com.smartfixsamana.controllers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.smartfixsamana.models.dto.RepairDTO;
-import com.smartfixsamana.models.entity.Repair;
-import com.smartfixsamana.models.service.RepairService;
+import com.smartfixsamana.models.entities.Repair;
+import com.smartfixsamana.models.services.RepairService;
 
 import jakarta.validation.Valid;
 
