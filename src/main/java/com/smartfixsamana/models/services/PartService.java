@@ -2,8 +2,6 @@ package com.smartfixsamana.models.services;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,14 +18,21 @@ import com.smartfixsamana.models.repositories.IPartRepository;
 @Service
 public class PartService {
 
-    @Autowired
-    private IPartRepository iPartRepository;
+    private final IPartRepository iPartRepository;
 
-    @Autowired
-    private PartCatalogService partCatalogService;
+    private final PartCatalogService partCatalogService;
 
-    @Autowired
-    private PhoneService phoneService;
+    private final PhoneService phoneService;
+
+    public PartService(IPartRepository iPartRepository, PartCatalogService partCatalogService, PhoneService phoneService) {
+        this.iPartRepository = iPartRepository;
+        this.partCatalogService = partCatalogService;
+        this.phoneService = phoneService;
+    }
+
+    public Long countAll() {
+        return iPartRepository.count();
+    }
 
     public List<Part> findAll() {
         return (List<Part>) iPartRepository.findAll();
@@ -41,10 +46,10 @@ public class PartService {
 
     public Part save(PartDTO partDTO) {
 
-        PartCatalog partCatalog = partCatalogService.findById(partDTO.getPartCatalogId())
+        PartCatalog partCatalog = partCatalogService.findById(partDTO.partCatalogId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lista de repusto no encontrado"));
 
-        Phone phone = phoneService.findById(partDTO.getPhoneId())
+        Phone phone = phoneService.findById(partDTO.phoneId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Celular no encontrado"));
 
         Part part = new Part();
@@ -62,9 +67,9 @@ public class PartService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Repuesto no encontrado con el ID: " + partId));
 
-        PartCatalog partCatalog = partCatalogService.findById(partDTO.getPartCatalogId())
+        PartCatalog partCatalog = partCatalogService.findById(partDTO.partCatalogId())
                 .orElseThrow(() -> new RuntimeException("Lista de repuesto no encontrada"));
-        Phone phone = phoneService.findById(partDTO.getPhoneId())
+        Phone phone = phoneService.findById(partDTO.phoneId())
                 .orElseThrow(() -> new RuntimeException("Celular no encontrad0"));
 
         part.setPartCatalog(partCatalog);

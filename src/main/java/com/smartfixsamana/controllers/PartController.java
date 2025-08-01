@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,8 +33,15 @@ import jakarta.validation.Valid;
 @RequestMapping("/parts")
 public class PartController {
 
-    @Autowired
-    private PartService partService;
+    private final PartService partService;
+
+    public PartController(PartService partService) {
+        this.partService = partService;
+    }
+    @GetMapping("/count")
+    public Long countParts() {
+        return partService.countAll();
+    }
 
 
     @GetMapping
@@ -82,9 +88,7 @@ public class PartController {
    
      private ResponseEntity<?> validation(BindingResult bindingResult){
         Map<String, String> errors = new HashMap<>();
-        bindingResult.getFieldErrors().forEach(error ->{
-            errors.put(error.getField(), "El campo "+ error.getField() + error.getDefaultMessage());
-        });
+        bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), "El campo "+ error.getField() + error.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
     }
 

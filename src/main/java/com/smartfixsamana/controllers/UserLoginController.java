@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,8 +21,11 @@ import jakarta.validation.Valid;
 @RequestMapping("/userslogin")
 public class UserLoginController {
 
-    @Autowired
-    private UserLoginService userLoginService;
+    private final UserLoginService userLoginService;
+
+    public UserLoginController(UserLoginService userLoginService) {
+        this.userLoginService = userLoginService;
+    }
 
     @GetMapping
     public List<UserLogin> findAll() {
@@ -61,9 +64,7 @@ public class UserLoginController {
     private ResponseEntity<?> validation(BindingResult bindingResult) {
         Map<String, String> errors = new HashMap<>();
 
-        bindingResult.getFieldErrors().forEach(error -> {
-            errors.put(error.getField(), "El campo " + error.getField() + " " + error.getDefaultMessage());
-        });
+        bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), "El campo " + error.getField() + " " + error.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
     }
 

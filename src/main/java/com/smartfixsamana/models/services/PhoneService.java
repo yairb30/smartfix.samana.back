@@ -3,7 +3,6 @@ package com.smartfixsamana.models.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,8 +16,14 @@ import com.smartfixsamana.models.repositories.IPhoneRepository;
 @Service
 public class PhoneService {
 
-    @Autowired
-    private IPhoneRepository iPhoneRepository;
+    private final IPhoneRepository iPhoneRepository;
+
+    public PhoneService(IPhoneRepository iPhoneRepository) {
+        this.iPhoneRepository = iPhoneRepository;
+    }
+    public Long countAll() {
+        return iPhoneRepository.count();
+    }
 
     public List<Phone> findAll() {
         return (List<Phone>) iPhoneRepository.findAll();

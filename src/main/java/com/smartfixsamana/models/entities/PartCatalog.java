@@ -1,5 +1,6 @@
 package com.smartfixsamana.models.entities;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.persistence.*;
@@ -33,6 +34,7 @@ public class PartCatalog implements Serializable {
 		this.name = name;
 	}
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 }

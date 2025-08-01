@@ -3,7 +3,7 @@ package com.smartfixsamana.models.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,15 @@ import com.smartfixsamana.models.repositories.ICustomerRepository;
 @Service
 public class CustomerService {
 
-    @Autowired
-    private ICustomerRepository iCustomerRepository;
+    private final ICustomerRepository iCustomerRepository;
+
+    public CustomerService(ICustomerRepository iCustomerRepository) {
+        this.iCustomerRepository = iCustomerRepository;
+    }
+
+    public Long countAll() {
+        return iCustomerRepository.count();
+    }
 
     public List<Customer> findAll() {
         return (List<Customer>) iCustomerRepository.findAll();

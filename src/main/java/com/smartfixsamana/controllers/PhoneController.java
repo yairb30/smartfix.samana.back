@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +32,15 @@ import jakarta.validation.Valid;
 @RequestMapping("/phones")
 public class PhoneController {
 
-    @Autowired
-    private PhoneService phoneService;
+    private final PhoneService phoneService;
+
+    public PhoneController(PhoneService phoneService) {
+        this.phoneService = phoneService;
+    }
+    @GetMapping("/count")
+    public long countPhones() {
+        return this.phoneService.countAll();
+    }
 
     @GetMapping
     public List<Phone> getPhones() {
@@ -86,9 +92,7 @@ public class PhoneController {
     private ResponseEntity<?> validation(BindingResult bindingResult) {
         Map<String, String> errors = new HashMap<>();
 
-        bindingResult.getFieldErrors().forEach(error -> {
-            errors.put(error.getField(), "El campo " + error.getField() + " " + error.getDefaultMessage());
-        });
+        bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), "El campo " + error.getField() + " " + error.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
     }
 

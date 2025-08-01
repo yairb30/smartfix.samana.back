@@ -1,110 +1,44 @@
 package com.smartfixsamana.auth.filter;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smartfixsamana.models.entities.UserLogin;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import com.smartfixsamana.auth.JwtTokenProvider;
+import com.smartfixsamana.auth.TokenJwtConfig;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import static com.smartfixsamana.auth.TokenJwtConfig.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+import java.io.IOException;
 
-    private AuthenticationManager authenticationManager;
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
-  
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
-@Override
-public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException {
-                String username = null;
-                String password = null;
-        
-                try {
-                    UserLogin userLogin = new ObjectMapper().readValue(request.getInputStream(), UserLogin.class);
-                    username = userLogin.getUsername();
-                    password = userLogin.getPassword();
-                } catch (StreamReadException e) {
-                    e.printStackTrace();
-                } catch (DatabindException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
-                        password);
-                return this.authenticationManager.authenticate(authenticationToken); 
+        String header = request.getHeader(TokenJwtConfig.HEADER_AUTHORIZATION);
+
+        if (header != null && header.startsWith(TokenJwtConfig.PREFIX_TOKEN)) {
+            String token = header.replace(TokenJwtConfig.PREFIX_TOKEN, "");
+
+            if (jwtTokenProvider.validateToken(token)) {
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        }
+
+        filterChain.doFilter(request, response);
     }
-    
-
-@Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-            Authentication authResult) throws IOException, ServletException {
-                User user = (User) authResult.getPrincipal();
-                String username = user.getUsername();
-                Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
-                boolean isAdmin = roles.stream().anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
-                Claims claims = Jwts
-                            .claims()
-                            .add("authorities", new ObjectMapper().writeValueAsString(roles))
-                            .add("username", username)
-                            .add("isAdmin", isAdmin)
-                            .build();
-                String jwt = Jwts.builder()
-                                .subject(username)
-                                .claims(claims)
-                                .signWith(SECRET_KEY)
-                                .issuedAt(new Date())
-                                .expiration(new Date(System.currentTimeMillis() + 3600000))
-                                .compact();
-        
-                response.addHeader(HEADER_AUTHORIZATION, PREFIX_TOKEN + jwt);
-                
-                Map<String, String> body = new HashMap<>();
-                body.put("token", jwt);
-                body.put("username", username);
-                body.put("message", String.format("Hola %s has iniciado sesion con exito", username));
-        
-                response.getWriter().write(new ObjectMapper().writeValueAsString(body));
-                response.setContentType(CONTENT_TYPE);
-                response.setStatus(200);
-    }
-
-
-
-@Override
-protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-        AuthenticationException failed) throws IOException, ServletException {
-            Map<String, String> body = new HashMap<>();
-            body.put("message", "Erroe en la autenticación con username o password incorrecto!");
-            body.put("error", failed.getMessage());
-        
-            response.getWriter().write(new ObjectMapper().writeValueAsString(body));
-            response.setContentType(CONTENT_TYPE);
-            response.setStatus(401);
-    }
-    
 }
+

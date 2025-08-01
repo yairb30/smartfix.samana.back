@@ -3,7 +3,7 @@ package com.smartfixsamana.models.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,14 +19,20 @@ import com.smartfixsamana.models.repositories.IRepairRepository;
 @Service
 public class RepairService {
 
-    @Autowired
-    private IRepairRepository iRepairRepository;
+    private final IRepairRepository iRepairRepository;
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
-    @Autowired
-    private PhoneService phoneService;
+    private final PhoneService phoneService;
+
+    public RepairService(IRepairRepository iRepairRepository, CustomerService customerService, PhoneService phoneService) {
+        this.iRepairRepository = iRepairRepository;
+        this.customerService = customerService;
+        this.phoneService = phoneService;
+    }
+    public Long countAll() {
+        return iRepairRepository.count();
+    }
 
     public List<Repair> getAll() {
         return (List<Repair>) iRepairRepository.findAll();
@@ -37,17 +43,17 @@ public class RepairService {
     }
 
     public Repair save(RepairDTO repairDTO) {
-        Customer customer = customerService.findById(repairDTO.getCustomerId())
+        Customer customer = customerService.findById(repairDTO.customerId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
-        Phone phone = phoneService.findById(repairDTO.getPhoneId())
+        Phone phone = phoneService.findById(repairDTO.phoneId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Celular no encontrado"));
 
         Repair repair = new Repair();
         repair.setCustomer(customer);
         repair.setPhone(phone);
-        repair.setFault(repairDTO.getFault());
-        repair.setState(repairDTO.getState());
-        repair.setDate(repairDTO.getDate());
+        repair.setFault(repairDTO.fault());
+        repair.setState(repairDTO.state());
+        repair.setDate(repairDTO.date());
 
         return iRepairRepository.save(repair);
     }
@@ -56,16 +62,16 @@ public class RepairService {
         Repair repair = iRepairRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reparación no encontrada"));
 
-        Customer customer = customerService.findById(repairDTO.getCustomerId())
+        Customer customer = customerService.findById(repairDTO.customerId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
-        Phone phone = phoneService.findById(repairDTO.getPhoneId())
+        Phone phone = phoneService.findById(repairDTO.phoneId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Celular no encontrado"));
 
         repair.setCustomer(customer);
         repair.setPhone(phone);
-        repair.setFault(repairDTO.getFault());
-        repair.setState(repairDTO.getState());
-        repair.setDate(repairDTO.getDate());
+        repair.setFault(repairDTO.fault());
+        repair.setState(repairDTO.state());
+        repair.setDate(repairDTO.date());
 
         return iRepairRepository.save(repair);
     }
