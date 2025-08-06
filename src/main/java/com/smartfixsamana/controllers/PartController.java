@@ -28,7 +28,7 @@ import com.smartfixsamana.models.services.PartService;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/parts")
 public class PartController {

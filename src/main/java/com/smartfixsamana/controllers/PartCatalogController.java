@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.smartfixsamana.models.entities.PartCatalog;
 import com.smartfixsamana.models.services.PartCatalogService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/parts_catalog")
 public class PartCatalogController {

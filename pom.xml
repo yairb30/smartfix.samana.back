@@ -5,7 +5,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.5</version>
-		<relativePath /> 
+		<relativePath />
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.smartfixsamana</groupId>
@@ -48,6 +48,7 @@
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
+			<version>8.3.0</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -77,12 +78,12 @@
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId> 
+			<artifactId>jjwt-jackson</artifactId>
 			<!-- or jjwt-gson if Gson is preferred -->
 			<version>0.12.6</version>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>
@@ -91,7 +92,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.1.0</version>
-					
+
 			</plugin>
 
 			<plugin>
@@ -107,5 +108,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>

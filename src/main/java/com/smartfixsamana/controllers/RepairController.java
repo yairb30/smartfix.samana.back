@@ -20,7 +20,7 @@ import com.smartfixsamana.models.services.RepairService;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/repairs")
 public class RepairController {

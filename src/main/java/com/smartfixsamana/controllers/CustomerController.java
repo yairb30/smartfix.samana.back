@@ -29,7 +29,7 @@ import com.smartfixsamana.models.services.CustomerService;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
