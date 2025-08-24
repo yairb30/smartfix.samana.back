@@ -7,7 +7,7 @@ ARG JAR_FILE=target/smartfixsamana_back-0.0.1.jar
 COPY ${JAR_FILE} app_smartfixsamana.jar
 
 # Definir el perfil activo (clave para Spring Boot)
-ENV SPRING_PROFILES_ACTIVE=docker
+ENV SPRING_PROFILES_ACTIVE=prod
 
 # Puerto que va a usar el contenedor
 EXPOSE 8080
