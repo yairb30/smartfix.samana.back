@@ -26,6 +26,10 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
     
+    # FIX: Dar permisos ejecutables al mvnw
+    - name: Make mvnw executable
+      run: chmod +x ./mvnw
+    
     - name: Build with Maven
       run: ./mvnw clean package -DskipTests
     
@@ -49,8 +53,16 @@ jobs:
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          cd /home/ubuntu/app
+          cd /home/ubuntu/smartfix-samana
+          
+          # Pull nueva imagen del backend
           docker pull ${{ secrets.DOCKER_USERNAME }}/smartfix-samana:ss-backend
+          
+          # Reiniciar servicios
           docker-compose down
           docker-compose up -d
+          
+          # Limpiar imágenes no utilizadas
           docker system prune -f
+          
+          echo "Backend deployment completed successfully!"
