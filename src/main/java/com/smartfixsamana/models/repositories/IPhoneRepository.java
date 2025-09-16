@@ -11,8 +11,9 @@ import com.smartfixsamana.models.entities.Phone;
 
 public interface IPhoneRepository extends CrudRepository<Phone, Long> {
 
-    @Query("SELECT p FROM Phone p WHERE " + "LOWER(p.brand) LIKE LOWER(CONCAT('%', :keyword, '%')) OR "
-            + "LOWER(p.model) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    @Query("SELECT p FROM Phone p " +
+            "WHERE LOWER(CONCAT(p.brand, ' ', p.model)) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Phone> findPhonesByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
 
 }

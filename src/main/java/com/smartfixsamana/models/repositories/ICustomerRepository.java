@@ -10,8 +10,9 @@ import com.smartfixsamana.models.entities.Customer;
 
 public interface ICustomerRepository extends CrudRepository<Customer, Long> {
 
-    @Query("SELECT c FROM Customer c WHERE " + "LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR "
-            + "LOWER(c.lastname) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    @Query(value = "SELECT c FROM Customer c " +
+            "WHERE LOWER(CONCAT(c.name, ' ', c.lastname)) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Customer> findCustomersByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
 
 }
